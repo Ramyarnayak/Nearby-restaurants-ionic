@@ -1,36 +1,21 @@
-
-
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-        Ionic 5 Geolocation & Geocoder Examples
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <div class="ion-padding">
-
-    <ion-button (click)="getCurrentCoordinates()" expand="block">
-      Get Location
-    </ion-button>
-
-  <ion-list>
-    <ion-list-header>
-      <ion-label>Location Coordinates</ion-label>
-    </ion-list-header>
-    <ion-item>
-      <ion-label>
-        Latitue
-      </ion-label>
-      <ion-badge color="danger" slot="end">{{latitude}}</ion-badge>
-    </ion-item>
-    <ion-item>
-      <ion-label>
-        Longitude
-      </ion-label>
-      <ion-badge color="danger" slot="end">{{longitude}}</ion-badge>
-    </ion-item>
-    </ion-list>    
+  <ion-navbar>
+      <ion-title>
+      Nearby Me Restaurants
+      </ion-title>
+  </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding>
+  
+  <div #map id="map"></div> 
+  
+  <div style="width : 100% ;height: 60%">
+      <ion-list>
+      <ion-item *ngFor="let place of places">
+          <p></p>
+      </ion-item>
+      </ion-list>
   </div>
-</ion-content>
+  
+  </ion-content>

@@ -2,7 +2,7 @@ import { NavController } from "@ionic/angular";
 import { IonicNativePlugin } from '@ionic-native/core'
 import { Geolocation ,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation';
 import { Component, ElementRef, ViewChild } from "@angular/core";
-import { TestBed } from "@angular/core/testing";
+
 
 declare var google;
 
@@ -14,55 +14,21 @@ declare var google;
 export class HomePage {
   options : GeolocationOptions;
   currentPos : Geoposition;
+  places : Array<any> ; 
+
   @ViewChild('map') mapElement: ElementRef;
    map: any;
-
-   places : Array<any> ; 
-  constructor(public navCtrl: NavController,
-    private geolocation : Geolocation) {}
-    
-    ionViewDidEnter(){
-      this.getUserPosition();
-  } 
-  service1Spy = TestBed.get(Service1);
-
-  getRestaurants(latLng)
-{
-    var service = new google.maps.places.PlacesService(this.map);
-    let request = {
-        location : latLng,
-        radius : 8047 ,
-        types: ["restaurant"]
-    };
-    return new Promise((resolve,reject)=>{
-        service.nearbySearch(request,function(results,status){
-            if(status === google.maps.places.PlacesServiceStatus.OK)
-            {
-                resolve(results);    
-            }else
-            {
-                reject(status);
-            }
-
-        }); 
-    });
-
-}
-
-createMarker(place)
-{
-    let marker = new google.maps.Marker({
-    map: this.map,
-    animation: google.maps.Animation.DROP,
-    position: place.geometry.location
-    });   
-} 
+  constructor(public navCtrl: NavController,private geolocation : Geolocation) {} 
   
+  onViewDidEnter(){
+    this.getUserPosition();
+}    
+
 getUserPosition(){
   this.options = {
   enableHighAccuracy : false
   };
- this.geolocation.getCurrentPosition(this.options).then((pos : Geoposition) => {
+  this.geolocation.getCurrentPosition(this.options).then((pos : Geoposition) => {
 
       this.currentPos = pos;     
 
@@ -74,6 +40,7 @@ getUserPosition(){
   ;
   })
 }
+
 addMap(lat,long){
 
   let latLng = new google.maps.LatLng(lat, long);
@@ -116,9 +83,36 @@ addMarker(){
   });
 
 }
+
+getRestaurants(latLng)
+{
+    var service = new google.maps.places.PlacesService(this.map);
+    let request = {
+        location : latLng,
+        radius : 8047 ,
+        types: ["restaurant"]
+    };
+    return new Promise((resolve,reject)=>{
+        service.nearbySearch(request,function(results,status){
+            if(status === google.maps.places.PlacesServiceStatus.OK)
+            {
+                resolve(results);    
+            }else
+            {
+                reject(status);
+            }
+
+        }); 
+    });
+
 }
 
-function Service1(Service1: any) {
-  throw new Error("Function not implemented.");
+createMarker(place)
+{
+    let marker = new google.maps.Marker({
+    map: this.map,
+    animation: google.maps.Animation.DROP,
+    position: place.geometry.location
+    });   
+}   
 }
-
